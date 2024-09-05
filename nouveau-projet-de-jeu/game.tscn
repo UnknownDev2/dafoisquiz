@@ -1,0 +1,94 @@
+[gd_scene load_steps=14 format=3 uid="uid://dwyogiapvg6i1"]
+
+[ext_resource type="Texture2D" uid="uid://dis6g6q1mfbb0" path="res://Assets/Textures/Dark/texture_01.png" id="1_ln3i5"]
+[ext_resource type="Script" path="res://player.gd" id="1_nxkv4"]
+[ext_resource type="Script" path="res://WeaponEquipping.gd" id="3_5paq0"]
+[ext_resource type="Texture2D" uid="uid://dcvi4w4uyrn0u" path="res://Assets/Textures/Orange/texture_01.png" id="3_chc30"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ea8m2"]
+albedo_texture = ExtResource("1_ln3i5")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esoic"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uq4pg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8664g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_glyjw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_opql1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_43xeu"]
+albedo_texture = ExtResource("3_chc30")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sey7s"]
+albedo_texture = ExtResource("3_chc30")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ak1sx"]
+albedo_texture = ExtResource("3_chc30")
+
+[node name="Game" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0343175, -0.0168474, -0.00657678)
+
+[node name="Floor" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_ea8m2")
+use_collision = true
+size = Vector3(20, 0, 20)
+material = SubResource("StandardMaterial3D_esoic")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.575348, 0)
+script = ExtResource("1_nxkv4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_uq4pg")
+
+[node name="Collision" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_8664g")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.204268, 0)
+
+[node name="Camera" type="Camera3D" parent="Player/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+fov = 90.0
+
+[node name="SwordPlacement" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 0.06, -0.36)
+script = ExtResource("3_5paq0")
+
+[node name="Sword" type="MeshInstance3D" parent="Player/SwordPlacement"]
+transform = Transform3D(0.0398724, -0.163501, -0.108278, 0.0132929, 0.644917, 0.0197284, 0.0165437, -0.124135, 0.245111, 0, 0, 0)
+mesh = SubResource("BoxMesh_glyjw")
+skeleton = NodePath("../../Head")
+
+[node name="Hitbox" type="CollisionShape3D" parent="Player/SwordPlacement/Sword"]
+shape = SubResource("BoxShape3D_opql1")
+
+[node name="Wall" type="CSGBox3D" parent="."]
+transform = Transform3D(0.116558, 0, 0, 0, 4.38216, 0, 0, 0, 0.260113, -4.95398, 0, 0)
+material_override = SubResource("StandardMaterial3D_43xeu")
+use_collision = true
+size = Vector3(20, 1, 20)
+material = SubResource("StandardMaterial3D_esoic")
+
+[node name="Platform" type="CSGBox3D" parent="."]
+transform = Transform3D(1.34763, 0, 0, 0, 1, 0, 0, 0, 2.20871, 3.291, 0.5, -0.102)
+material_override = SubResource("StandardMaterial3D_sey7s")
+use_collision = true
+
+[node name="Platform2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.544732, 0, 2.02023, 0, 1, 0, -1.23263, 0, 0.892797, 2.748, 1, -2.677)
+material_override = SubResource("StandardMaterial3D_ak1sx")
+use_collision = true
+size = Vector3(1, 2, 1)
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.970188, 0.174548, 0.168134, -0.208615, 0.248367, 0.945935, 0.123352, -0.95281, 0.277376, 0, 33.1233, -0.328967)
+light_color = Color(0.983826, 0.976528, 0.952574, 1)
+light_energy = 1.2
+light_angular_distance = 90.0
+directional_shadow_blend_splits = true
+sky_mode = 1
